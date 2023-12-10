@@ -1,0 +1,57 @@
+---
+- name: Configure wevserver with nginx
+  hosts: webservers
+  become: True
+  vars:
+    tls_dir: /etc/nginx/ssl/
+    key_file: nginx.key
+    cert_file: nginx.crt
+    sites_avail: /etc/nginx/sites-available
+    sites_enabled: /etc/nginx/sites-enabled
+    index: /usr/share/nginx/html/index.html
+    server_name: playground-0
+  tasks:
+    - name: Ensure nginx is installed
+      package:
+        name: nginx
+        update_cache: true
+
+    - name: Creates nginx dir if not
+      ansible.builtin.file:
+        path: "{{ sites_enabled}}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0744
+        recurse: yes
+
+    - name: Creates nginx dir if not
+      ansible.builtin.file:
+        path: "{{ sites_avail}}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0744
+        recurse: yes
+
+    - name: Copy nginx config
+      copy:
+        src: nginx.conf
+        dest: "{{ sites_avail }}/default"
+
+    - name: Enable configuration
+      file:
+        dest: "{{ sites_enabled }}/default"
+        src: "{{ sites_avail }}/default"
+        state: link
+
+    - name: Copy index.html
+      template:
+        src: index.html.j2
+        dest: "{{ index }}"
+        mode: '0644'
+
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted

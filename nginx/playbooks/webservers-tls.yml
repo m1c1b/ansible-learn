@@ -1,7 +1,7 @@
 #!/usr/bin/env ansible-playbook
 ---
 - name: Configure wevserver with nginx
-  hosts: webservers
+  hosts: servers
   become: True
   vars:
     tls_dir: /etc/nginx/ssl/

@@ -9,7 +9,7 @@
     sites_avail: /etc/nginx/sites-available
     sites_enabled: /etc/nginx/sites-enabled
     index: /usr/share/nginx/html/index.html
-    server_name: playground-0
+    server_name: local-rocky-0
   tasks:
     - name: Ensure nginx is installed
       package:

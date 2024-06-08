@@ -1,0 +1,6 @@
+tls_dir: /etc/nginx/ssl/
+key_file: nginx.key
+cert_file: nginx.crt
+sites_avail: /etc/nginx/sites-available
+sites_enabled: /etc/nginx/sites-enabled
+index: /usr/share/nginx/html/index.html

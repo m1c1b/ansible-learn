@@ -2,13 +2,9 @@
 - name: Configure wevserver with nginx
   hosts: webservers
   become: True
+  vars_files:
+    - nginx.yml
   vars:
-    tls_dir: /etc/nginx/ssl/
-    key_file: nginx.key
-    cert_file: nginx.crt
-    sites_avail: /etc/nginx/sites-available
-    sites_enabled: /etc/nginx/sites-enabled
-    index: /usr/share/nginx/html/index.html
     server_name: local-rocky-0
   tasks:
     - name: Ensure nginx is installed
@@ -35,8 +31,8 @@
         recurse: yes
 
     - name: Copy nginx config
-      copy:
-        src: nginx.conf
+      template:
+        src: nginx.conf.j2
         dest: "{{ sites_avail }}/default"
 
     - name: Enable configuration
